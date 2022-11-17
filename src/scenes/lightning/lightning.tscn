@@ -1,0 +1,121 @@
+[gd_scene load_steps=17 format=3 uid="uid://tjxmc7cdv5l8"]
+
+[ext_resource type="Shader" path="res://src/scenes/lightning/lightning.gdshader" id="1_0drdk"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cjenc"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_l2547"]
+in_3d_space = true
+seamless = true
+noise = SubResource("FastNoiseLite_cjenc")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_sbvc4"]
+seed = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jecwi"]
+in_3d_space = true
+seamless = true
+noise = SubResource("FastNoiseLite_sbvc4")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_bhlmc"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0mnm6"]
+in_3d_space = true
+seamless = true
+noise = SubResource("FastNoiseLite_bhlmc")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ywlem"]
+seed = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bcchq"]
+in_3d_space = true
+seamless = true
+noise = SubResource("FastNoiseLite_ywlem")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c6lvm"]
+render_priority = 0
+shader = ExtResource("1_0drdk")
+shader_parameter/alpha = 0.602
+shader_parameter/alpha2 = 0.614
+shader_parameter/alpha_direction = Vector2(1, 1)
+shader_parameter/alpha_direction2 = Vector2(1, 1)
+shader_parameter/alpha_mask_texture = SubResource("NoiseTexture2D_l2547")
+shader_parameter/alpha_mask_texture2 = SubResource("NoiseTexture2D_jecwi")
+shader_parameter/alpha_time = 0.5
+shader_parameter/alpha_time2 = 0.5
+shader_parameter/bolt_angularity = 15.609
+shader_parameter/bolt_ends_affect = 0.742
+shader_parameter/bolt_modulation = 2.257
+shader_parameter/bolt_position = 0.5
+shader_parameter/cycle = 9.97
+shader_parameter/displacement_direction = Vector2(1, 1)
+shader_parameter/displacement_direction2 = Vector2(1, 1)
+shader_parameter/displacement_strength = 1.507
+shader_parameter/displacement_strength2 = 1.13
+shader_parameter/displacement_texture = SubResource("NoiseTexture2D_0mnm6")
+shader_parameter/displacement_texture2 = SubResource("NoiseTexture2D_bcchq")
+shader_parameter/displacement_time = 0.5
+shader_parameter/displacement_time2 = 0.5
+shader_parameter/emission_color = Color(0.239216, 0.215686, 1, 1)
+shader_parameter/emission_intensity = 10.0
+shader_parameter/flash_ratio = 0.0
+shader_parameter/lightning_color = Color(0.478431, 0.968627, 0.94902, 1)
+shader_parameter/size = 0.464
+shader_parameter/speed = 1.35
+shader_parameter/time_scale = 2.0
+shader_parameter/time_shift = 7.0
+shader_parameter/width = 0.1
+
+[sub_resource type="Gradient" id="Gradient_wq15u"]
+offsets = PackedFloat32Array(0, 0.947802)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_yjv8j"]
+gradient = SubResource("Gradient_wq15u")
+
+[sub_resource type="Curve" id="Curve_k57tl"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.180879, 0.190909), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_fxe5f"]
+curve = SubResource("Curve_k57tl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nn74i"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+gravity = Vector3(0.1, -1, 0.1)
+initial_velocity_min = 0.01
+initial_velocity_max = 0.01
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+linear_accel_min = 100.0
+linear_accel_max = 100.0
+color_ramp = SubResource("GradientTexture1D_yjv8j")
+turbulence_noise_speed = Vector3(0.005, -150, 0.005)
+turbulence_influence_max = 0.15
+turbulence_influence_over_life = SubResource("CurveTexture_fxe5f")
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_0p7fu"]
+size = 0.194
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Lightning" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.347452, 19.8806, 0)
+material_override = SubResource("ShaderMaterial_c6lvm")
+cast_shadow = 0
+extra_cull_margin = 40.0
+amount = 10
+lifetime = 0.8
+speed_scale = 4.0
+visibility_aabb = AABB(-1.00001, -43.3342, -1.00001, 4.27065, 44.3343, 3.16906)
+trail_enabled = true
+trail_lifetime = 10.0
+process_material = SubResource("ParticleProcessMaterial_nn74i")
+draw_pass_1 = SubResource("RibbonTrailMesh_0p7fu")
+
+[node name="GPUParticlesAttractorBox3D" type="GPUParticlesAttractorBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.153099, 7.56711, 0)
+strength = 128.0
+attenuation = 0.239877
+extents = Vector3(1, 20, 1)
